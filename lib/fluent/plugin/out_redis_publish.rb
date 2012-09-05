@@ -1,11 +1,13 @@
 module Fluent
   class RedisPublishOutput < Fluent::BufferedOutput
-    Fluent::Plugin.register_output('redis-publish', self)
+    Fluent::Plugin.register_output('redis_publish', self)
 
     config_param :host, :string,  :default => '127.0.0.1'
     config_param :path, :string,  :default => nil
     config_param :port, :integer, :default => 6379
     config_param :db,   :integer, :default => 0
+
+    attr_reader :redis
 
     def initialize
       super
@@ -37,7 +39,7 @@ module Fluent
     def write(chunk)
       @redis.pipelined do
         chunk.msgpack_each do |(tag, time, record)|
-          record[:time] = time
+          record["time"] = time
           @redis.publish(tag, record)
         end
       end
