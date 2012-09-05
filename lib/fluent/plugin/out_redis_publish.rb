@@ -23,6 +23,7 @@ module Fluent
         @redis = Redis.new(:path => @path, :db => @db)
       else
         @redis = Redis.new(:host => @host, :port => @port, :db => @db);
+      end
     end
 
     def shutdown
@@ -35,10 +36,10 @@ module Fluent
 
     def write(chunk)
       @redis.pipelined do
-        chunk.msgpack_each { |(tag, time, record)|
+        chunk.msgpack_each do |(tag, time, record)|
           record[:time] = time
           @redis.publish(tag, record)
-        }
+        end
       end
     end
   end

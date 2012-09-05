@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'fluent-plugin-redis-publish/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "fluent-plugin-redis-publish"
