@@ -67,13 +67,6 @@ class RedisPublishOutputTest < Test::Unit::TestCase
     d.run
 
     assert_equal "test", $channel
-    assert_equal({ "foo" => "bar", "time" => time }, $message)
-
-    d = create_driver(CONFIG1)
-    time = Time.parse("2011-02-02 13:14:15 UTC").to_i
-    d.emit({ "foo" => "bar", "num" => 123 }, time);
-    d.run
-
-    assert_equal({ "foo" => "bar", "num" => 123, "time" => time }, $message)
+    assert_equal(%Q[{"foo":"bar","time":#{time}}], $message)
   end
 end
